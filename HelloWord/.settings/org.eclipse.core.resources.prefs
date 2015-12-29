@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/ctkj/common/binds/BindUtils.lua=UTF-8
+encoding//src/ctkj/effect/Shake.lua=UTF-8
+encoding//src/ctkj/event/EventListener.lua=UTF-8
+encoding//src/ctkj/utils/CustomMath.lua=UTF-8
+encoding//src/ctkj/utils/ObjectPool.lua=UTF-8
+encoding//src/ctkj/utils/StringUtil.lua=UTF-8
+encoding//src/ctkj/utils/TableUtil.lua=UTF-8
+encoding//src/ctkj/utils/TimeUtil.lua=UTF-8

@@ -1,0 +1,21 @@
+<Solution>
+  <PropertyGroup Name="HelloWord" Version="2.3.3.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Project Name="MainScene.csd" Type="Scene" />
+        <Image Name="HelloWorld.png" />
+        <PlistImageFolder Image="cat.png" PListFile="cat.plist" Name=".cat_PList.Dir">
+          <PlistImageFile Name="cat_a1.png" Key="cat_a1.png" />
+          <PlistImageFile Name="cat_a2.png" Key="cat_a2.png" />
+          <PlistImageFile Name="cat_a3.png" Key="cat_a3.png" />
+          <PlistImageFile Name="cat_s1.png" Key="cat_s1.png" />
+          <PlistImageFile Name="cat_s2.png" Key="cat_s2.png" />
+          <PlistImageFile Name="cat_s3.png" Key="cat_s3.png" />
+          <PlistImageFile Name="cat_s4.png" Key="cat_s4.png" />
+        </PlistImageFolder>
+        <Image Name="cat.png" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>
