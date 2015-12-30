@@ -26,7 +26,7 @@ function MainScene:onCreate()
     EventListener.addEventListener(nil,"test",self.test);
     EventListener.dispatchEvent("test",2222)
     --绑定工具测试用例
---    self.testBindUtil();
+    self.testBindUtil();
     --PipeManager测试用例
     self.testPipe();
 end

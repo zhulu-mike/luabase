@@ -20,7 +20,7 @@ function M:ctor()
 end
 
 function M:test2(value)
-    LogUtil.log("属性改变："..value)
+    LogUtil.log("我监听到属性改变了，新的值是："..value)
 end
 
 return BindUtilTest
