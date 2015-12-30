@@ -8,24 +8,22 @@ require("ctkj/common/binds/Data")
 local GameData = class("GameData",Data) 
 cc.exports.GameData = GameData;
 
-function GameData.:ctor()
+function GameData:ctor()
+end
+function getName()
+return self._name;
 end
 
-function get name()
-	return _name;
+function setName(value)
+self:valueChanged("name", "_name", value);
 end
 
-function set name(value)
-	valueChanged("name", "_name", value);
+function setProperty(name, value)
+self[name] = value
 end
 
-function setProperty($name, $value)
-	this[$name] = $value;
-	return;
-end
-
-function getProperty($name)
-	return this[$name];
+function getProperty(name)
+return self[name]
 end
 return GameData
 ]]--

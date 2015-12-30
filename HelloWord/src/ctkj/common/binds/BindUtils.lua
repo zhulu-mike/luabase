@@ -5,15 +5,8 @@
 
 --[[
 @example
-	BindUtils.bindSetter(say, testVO, "name");
-	BindUtils.bindProperty(temp, "name", testVO, "name", true);
-	testVO.name = "jiang" ;
-	
-	trace("temp.name:",temp.name);
- 	
-	private say(value:* = nil ):Void{
-		trace("say hi",value);
-	}
+    BindUtils.bindSetter(handler(self,self.function1),instance1,"propertyname",true);
+    BindUtils.bindProperty(self, "mypropertyname", instance1, "propertyname", true);
 ]]--
 require("ctkj/common/binds/DataChangeEvent")
 require("ctkj/event/EventListener")
@@ -24,16 +17,19 @@ cc.exports.BindUtils = BindUtils;
 local s_index = 0;
 local s_hosts = {};
 		
-	function BindUtils:ctor(l_index, l_sProp, l_setter, l_tProp) 
-		self.index_ = l_index;
-        self.sProp_ = l_sProp;
-        self.setter_ = l_setter;
-        self.tProp_ = l_tProp;
-        self:bind();
-	end
+function BindUtils:ctor(l_index,l_sHost,  l_sProp, l_setter, l_tHost, l_tProp) 
+	self.index_ = l_index;
+	self.sHost = l_sHost;
+    self.sProp_ = l_sProp;
+    self.tHost_ = l_tHost;
+    self.setter_ = l_setter;
+    self.tProp_ = l_tProp;
+    self:bind();
+end
 	
 function BindUtils:bind()
-    EventListener.addEventListener(nil,DataChangeEvent.CHANGE,self:dataChangeHander)
+    self.bindBack = handler(self,self.dataChangeHander)
+    EventListener.addEventListener(nil,DataChangeEvent.CHANGE,self.bindBack)
 end
 
 function BindUtils:dataChangeHander(event)
@@ -42,32 +38,32 @@ function BindUtils:dataChangeHander(event)
 	then
         if self.setter_ ~= nil
 		then
-            self.setter_.excute([edata.newValue]);
+            self.setter_(edata.newValue)
 		end
         if self.tHost_ ~= nil
 		then
-            self.tHost_[self.tProp_] = edata.newValue;
+            self.tHost_[self.tProp_] = edata.newValue
 		end
-	}
 	end
 end
 
 function BindUtils:clear()
-	self:unbind();
-    self.setter_ = nil;
-    s_hosts[self.index_] = nil;
+	self:unbind()
+    self.setter_ = nil
+    s_hosts[self.index_] = nil
 end
 
 function BindUtils:unbind()
-    EventListener.removeEventListener(nil,self:dataChangeHander);
+    EventListener.removeEventListener(nil,self.bindBack)
+    self.bindBack = nil
 end
 
---°ó¶¨Ò»¸öÊôĞÔ example BindUtils.bindProperty(_page, "currentPage", _pageData, "currentPage", true);
---@param l_tHost ¶¨Òå°ó¶¨µ½ l_sProp µÄÊôĞÔµÄ Object¡£ 
---@param l_tProp ÔÚÒª°ó¶¨µÄ site Object ÖĞ¶¨ÒåµÄ¹«ÓÃÊôĞÔµÄÃû³Æ¡£µ± chain Öµ¸ü¸ÄÊ±£¬¸ÃÊôĞÔ½«½ÓÊÕ chain µÄµ±Ç°Öµ¡£
---@param l_sHost ÓÃÓÚ³ĞÔØÒª¼àÊÓµÄÊôĞÔ»òÊôĞÔÁ´µÄ¶ÔÏó¡£ 
---@param l_sProp ÓÃÓÚÖ¸¶¨Òª¼àÊÓµÄÊôĞÔ»òÊôĞÔÁ´µÄÖµ¡£
---@param l_immediately ÊÇ·ñÁ¢¼´Ö´ĞĞ
+--ç»‘å®šå±æ€§ example BindUtils.bindProperty(_page, "currentPage", _pageData, "currentPage", true);
+--@param l_tHost å®šä¹‰ç»‘å®šåˆ° l_sProp çš„å±æ€§çš„ Objectã€‚ 
+--@param l_tProp åœ¨è¦ç»‘å®šçš„ site Object ä¸­å®šä¹‰çš„å…¬ç”¨å±æ€§çš„åç§°ã€‚å½“ chain å€¼æ›´æ”¹æ—¶ï¼Œè¯¥å±æ€§å°†æ¥æ”¶ chain çš„å½“å‰å€¼ã€‚
+--@param l_sHost ç”¨äºæ‰¿è½½è¦ç›‘è§†çš„å±æ€§æˆ–å±æ€§é“¾çš„å¯¹è±¡ã€‚ 
+--@param l_sProp ç”¨äºæŒ‡å®šè¦ç›‘è§†çš„å±æ€§æˆ–å±æ€§é“¾çš„å€¼ã€‚
+--@param l_immediately æ˜¯å¦ç«‹å³æ‰§è¡Œ
 --@return void
 function BindUtils.bindProperty(l_tHost, l_tProp, l_sHost, l_sProp, l_immediately)
     l_immediately = l_immediately or false;
@@ -75,39 +71,39 @@ function BindUtils.bindProperty(l_tHost, l_tProp, l_sHost, l_sProp, l_immediatel
 	then
 		l_tHost[l_tProp] = l_sHost[l_sProp];
 	end
-    BindUtils.s_index = BindUtils.s_index + 1;
-    local _bind = BindUtils:create(BindUtils.s_index, l_sProp, nil, l_tProp);
-    BindUtils.s_hosts[BindUtils.s_index] = _bind;
+    s_index = s_index + 1;
+    local _bind = BindUtils:create(s_index, l_sHost, l_sProp, nil, l_tHost, l_tProp);
+    s_hosts[s_index] = _bind;
 	return _bind
 end
 
 function BindUtils.allUnbind()
 	local _temp = nil;
-	local allutils = BindUtils.s_hosts;
+	local allutils = s_hosts;
     for _temp in pairs(allutils)
     do
 		allutils[_temp]:clear();
 	end
-	BindUtils.s_index = 0;
-    BindUtils.s_hosts = {};
+	s_index = 0;
+    s_hosts = {};
 	return;
 end
 	
 --example BindUtils.bindSetter(setListFun, _pageData, "showList");
- --@param l_setter ÊôĞÔ¸Ä±äÊ±´¥·¢ÊÂ¼ş
- --@param l_sHost  ÓÃÓÚ³ĞÔØÒª¼àÊÓµÄÊôĞÔ»òÊôĞÔÁ´µÄ¶ÔÏó
- --@param l_tProp  ÓÃÓÚÖ¸¶¨Òª¼àÊÓµÄÊôĞÔ»òÊôĞÔÁ´µÄÖµ¡£
- --@param l_immediately ÊÇ·ñÁ¢¼´Ö´ĞĞ
+--@param l_setter å±æ€§æ”¹å˜æ—¶è§¦å‘å‡½æ•°ï¼Œhandlerç±»å‹
+--@param l_sHost  ç”¨äºæ‰¿è½½è¦ç›‘è§†çš„å±æ€§æˆ–å±æ€§é“¾çš„å¯¹è±¡
+--@param l_sProp  ç”¨äºæŒ‡å®šè¦ç›‘è§†çš„å±æ€§æˆ–å±æ€§é“¾çš„å€¼ã€‚
+--@param l_immediately æ˜¯å¦ç«‹å³æ‰§è¡Œ
  --@return void
-function BindUtils.bindSetter(l_setter, l_sHost, l_tProp, l_immediately)
-    l_immediately = l_immediately or false;
+function BindUtils.bindSetter(l_setter, l_sHost, l_sProp, l_immediately)
+    l_immediately = l_immediately or false
     if l_immediately
     then
-        l_setter.excute([l_sHost[l_tProp]]);
+        l_setter(l_sHost[l_sProp])
     end
-    BindUtils.s_index = BindUtils.s_index + 1;
-    local _bind = BindUtils:create(BindUtils.s_index, l_sHost, l_tProp, l_setter);
-    BindUtils.s_hosts[BindUtils.s_index] = _bind;
+    s_index = s_index + 1;
+    local _bind = BindUtils:create(s_index, l_sHost, l_sProp, l_setter,nil,nil);
+    s_hosts[s_index] = _bind;
     return _bind
 end
 

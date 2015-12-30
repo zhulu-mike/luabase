@@ -8,14 +8,14 @@ function Observer:ctor(__method , __context )
     self.s_notifyContext = __context;
 end
     
-function Observer.notifyObserver(__notification)
+function Observer:notifyObserver(__notification)
     self.s_notifyMethod(self.s_notifyContext,__notification);
 end
     
 --比较函数上下文域
 --@param __nontext 上下文域
 --@return bool
-function Observer.compareNotifyContext(__nontext)
+function Observer:compareNotifyContext(__nontext)
     return __nontext == self.s_notifyContext;
 end
 return Observer
