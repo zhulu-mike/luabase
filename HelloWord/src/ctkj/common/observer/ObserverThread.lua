@@ -42,12 +42,12 @@ function ObserverThread:removeObserver(__name , __context )
         local len = #_arr;
         while index <= len
         do
-                obj = _arr[index] ;
+            obj = _arr[index] ;
             if obj:compareNotifyContext(__context)
-			    then
-				    _arr.splice(index, 1);
-				    break;
-                end
+		    then
+			    _arr[index] = nil
+			    break
+            end
             index = index+1;
         end
         if #_arr == 0
