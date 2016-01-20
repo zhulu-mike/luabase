@@ -49,7 +49,7 @@ function AppBase:createView(name)
                 return require(packageName)
             end, function(msg)
             if not string.find(msg, string.format("'%s' not found:", packageName)) then
-                print("load view error: ", msg)
+                release_print("load view error: ", msg)
             end
         end)
         local t = type(view)
