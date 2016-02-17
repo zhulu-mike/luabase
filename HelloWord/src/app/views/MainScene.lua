@@ -6,6 +6,7 @@ require "ctkj.event.EventListener"
 require "test.BindUtilTest"
 require "test.PipeTest"
 require "test.MvcModuleTest"
+require "test.HttpTest"
 
 
 local MainScene = class("MainScene", cc.load("mvc").ViewBase)
@@ -31,8 +32,9 @@ function MainScene:onCreate()
     --绑定工具测试用例
     self.testBindUtil()
     --PipeManager测试用例
-    self.testPipe()
-    self.testMvc()
+--    self.testPipe()
+--    self.testMvc()
+    self.testHttp()
 end
 
 function MainScene.testBindUtil(value)
@@ -50,6 +52,10 @@ end
 
 function MainScene.testMvc()
     MvcModuleTest:create()
+end
+
+function MainScene.testHttp()
+    HttpTest:create()
 end
 
 
