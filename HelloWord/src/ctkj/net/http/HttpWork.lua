@@ -12,12 +12,13 @@ end
 local M = class("HttpWork")
 cc.exports.HttpWork = M
 require("json")
+local md5 = require "ctkj.utils.md5"
 local secret = "fs$#%#$^TGDf#%345"
 
 function M.sendGet(url, commandname, data, callbackhandler)
 	local xhr = cc.XMLHttpRequest:new()
     xhr.responseType = cc.XMLHTTPREQUEST_RESPONSE_JSON
-    local rdata = {funcname = commandname, value = json.encode(data)}
+    local rdata = {funcname = commandname, value = json.encode(data), token = M.encrypt(data)}
     url = url .. "?" .. M.encodeHttpParam(rdata)
     xhr:open("GET", url)
     release_print("http sendget:" .. url)
@@ -72,6 +73,25 @@ function M.encodeHttpParam(data)
         url = string.sub(url, 1,#url-1)
     end
     return url
+end
+
+function M.encrypt(data)
+    local keys = {}
+    local i = 1
+	for key in pairs(data) do 
+	   keys[i] = key
+	   i = i + 1
+	end
+	table.sort(keys)
+	local sign = ""
+    for key, val in ipairs(keys) do
+		sign = sign .. (val .. "=" .. data[val] .. "&")
+	end
+    sign = sign .. ("key=" .. "sdf#@%#fsd3@%")
+    local signdata = md5.sumhexa(sign, string.len(sign))
+    --md5(sign)
+    signdata = string.upper(signdata)
+    return signdata
 end
 
 

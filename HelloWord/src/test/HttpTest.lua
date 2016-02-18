@@ -7,7 +7,7 @@ cc.exports.HttpTest = M
 
 function M:ctor()
     LogUtil.log("HttpTest create")
-    HttpWork.sendGet("http://127.0.0.1:8088/php/colorswitch/door.php","updatescore",{userid=1,score=10},handler(self,self.callback))
+    HttpWork.sendGet("http://127.0.0.1:8088/colorswitch/door.php","updatescore",{userid=1,score=10},handler(self,self.callback))
 end
 
 function M:callback(ret)
