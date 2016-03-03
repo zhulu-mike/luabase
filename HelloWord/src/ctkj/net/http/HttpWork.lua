@@ -18,9 +18,10 @@ local secret = "fs$#%#$^TGDf#%345"
 function M.sendGet(url, commandname, data, callbackhandler)
 	local xhr = cc.XMLHttpRequest:new()
     xhr.responseType = cc.XMLHTTPREQUEST_RESPONSE_JSON
-    local rdata = {funcname = commandname, value = json.encode(data), token = M.encrypt(data)}
+    local rdata = {funcname = commandname, value = data, token = M.encrypt(data)}
     url = url .. "?" .. M.encodeHttpParam(rdata)
     xhr:open("GET", url)
+    release_print("cc.XMLHTTPREQUEST_RESPONSE_JSON:"..cc.XMLHTTPREQUEST_RESPONSE_JSON)
     release_print("http sendget:" .. url)
     local function onReadyStateChange()
         if xhr.readyState == 4 and (xhr.status >= 200 and xhr.status < 207) then
@@ -63,9 +64,9 @@ function M.encodeHttpParam(data)
     local flag = false
     for key in pairs(data) do 
         if type(data[key]) == "table" then
-            url = url .. (key .. "=" .. json.encode(data[key]) .. "&")
+            url = url .. (key .. "=" .. string.urlencode(json.encode(data[key])) .. "&")
         else
-            url = url .. (key .. "=" .. data[key] .. "&")
+            url = url .. (key .. "=" .. string.urlencode(data[key]) .. "&")
         end
         flag = true
     end
@@ -74,6 +75,7 @@ function M.encodeHttpParam(data)
     end
     return url
 end
+
 
 function M.encrypt(data)
     local keys = {}
