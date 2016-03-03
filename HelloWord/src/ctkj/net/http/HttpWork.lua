@@ -29,7 +29,9 @@ function M.sendGet(url, commandname, data, callbackhandler)
 --            print(xhr.response)
             release_print("http sendget back:" .. xhr.response)
             local backdata = json.decode(xhr.response,1)
-            callbackhandler(backdata);
+            if callbackhandler ~= nil then
+                callbackhandler(backdata.data)
+            end
         else
             release_print("http sendget back wrong:" .. xhr.response .. " status:" .. xhr.status .. " readyState:" .. xhr.readyState)
         end
@@ -46,7 +48,9 @@ function M.sendPost(url, commandname, data, callbackhandler)
     local function onReadyStateChange()
         if xhr.readyState == 4 and (xhr.status >= 200 and xhr.status < 207) then
             local backdata = json.decode(xhr.response,1)
-            callbackhandler(backdata);
+            if callbackhandler ~= nil then
+                callbackhandler(backdata.data)
+            end
         else
             print("xhr.readyState is:", xhr.readyState, "xhr.status is: ",xhr.status)
         end

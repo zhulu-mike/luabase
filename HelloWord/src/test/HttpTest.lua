@@ -7,11 +7,12 @@ cc.exports.HttpTest = M
 
 function M:ctor()
     LogUtil.log("HttpTest create")
-    HttpWork.sendGet("http://192.168.6.72:8088/colorswitch/door.php","loginUser",{deviceid="test6",account="", name="大哥"},handler(self,self.callback))
+    HttpWork.sendGet("http://192.168.6.72:8088/colorswitch/door.php","loginUser",{deviceid="test88",account="", name="88"},handler(self,self.callback))
 end
 
 function M:callback(ret)
-    LogUtil.log(table.serialize(ret))
+    release_print(1)
+    HttpWork.sendGet("http://192.168.6.72:8088/colorswitch/door.php","updatescore",{userid=ret.user.id,score=4, lk=ret.user.loginkey})
 end
 
 return M
